@@ -2,212 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bidirectional Activity Calculator</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #f3f4f6;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .calculator-card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-            max-width: 450px;
-            box-sizing: border-box;
-        }
-
-        .card-title {
-            margin: 0;
-            text-align: center;
-            color: #111827;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        /* Target Selector Box Styling */
-        .target-box {
-            background-color: #eff6ff;
-            border: 1px solid #bfdbfe;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .target-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: #1e40af;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .radio-group {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .radio-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            color: #1e3a8a;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .picker-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: opacity 0.2s ease;
-        }
-
-        .section-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #4b5563;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .picker-container {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background-color: #f9fafb;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-        }
-
-        .input-group label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #9ca3af;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .numeric-input {
-            width: 100%;
-            height: 40px;
-            text-align: center;
-            font-size: 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding-right: 22px;
-            box-sizing: border-box;
-            background: white;
-            color: #111827;
-        }
-
-        .numeric-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-
-        /* Calculated Output Styling */
-        .numeric-input:read-only {
-            background-color: #e5e7eb;
-            color: #4b5563;
-            cursor: not-allowed;
-            border-color: #d1d5db;
-            padding-right: 0; /* Remove padding space since arrows hide */
-        }
-
-        /* Dynamic Selector Rules: Hide arrows when input is read-only */
-        .numeric-input:read-only + .arrow-buttons {
-            display: none !important;
-        }
-
-        .numeric-input::-webkit-outer-spin-button,
-        .numeric-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .arrow-buttons {
-            position: absolute;
-            right: 1px;
-            display: flex;
-            flex-direction: column;
-            height: calc(100% - 2px);
-            justify-content: space-between;
-        }
-
-        .arrow-btn {
-            background: #f3f4f6;
-            border: none;
-            border-left: 1px solid #d1d5db;
-            cursor: pointer;
-            font-size: 8px;
-            height: 50%;
-            width: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            color: #4b5563;
-        }
-
-        .arrow-btn:hover { background: #e5e7eb; }
-        .arrow-btn:first-child { border-top-right-radius: 5px; border-bottom: 1px solid #d1d5db; }
-        .arrow-btn:last-child { border-bottom-right-radius: 5px; }
-
-        .separator {
-            font-size: 18px;
-            font-weight: bold;
-            color: #9ca3af;
-            margin-top: 14px;
-        }
-
-        select {
-            height: 40px;
-            margin-top: 15px;
-            padding: 0 8px;
-            font-size: 13px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            background-color: #fff;
-            cursor: pointer;
-            color: #374151;
-            flex: 1.5;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Activity Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -235,7 +32,7 @@
                 <div class="input-group">
                     <label>Hours</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" id="time-hours" data-max="99" data-pad="true" value="00">
+                        <input type="text" class="numeric-input integer-only" id="time-hours" data-max="99" data-pad="true" value="00">
                         <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
@@ -243,7 +40,7 @@
                 <div class="input-group">
                     <label>Min</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" id="time-minutes" data-max="59" data-pad="true" value="00">
+                        <input type="text" class="numeric-input integer-only" id="time-minutes" data-max="59" data-pad="true" value="00">
                         <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
@@ -251,7 +48,7 @@
                 <div class="input-group">
                     <label>Sec</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" id="time-seconds" data-max="59" data-pad="true" value="00">
+                        <input type="text" class="numeric-input integer-only" id="time-seconds" data-max="59" data-pad="true" value="00">
                         <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
@@ -271,6 +68,10 @@
                 <select id="distanceUnit">
                     <option value="km">kilometers (km)</option>
                     <option value="miles">miles (mi)</option>
+                    <option value="marathon">Marathon</option>
+                    <option value="half-marathon">Half-Marathon</option>
+                    <option value="10k">10K</option>
+                    <option value="5k">5K</option>
                 </select>
             </div>
         </div>
@@ -281,7 +82,7 @@
                 <div class="input-group">
                     <label>Min</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" id="pace-minutes" data-max="59" data-pad="true" value="00">
+                        <input type="text" class="numeric-input integer-only" id="pace-minutes" data-max="59" data-pad="true" value="00">
                         <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
@@ -289,7 +90,7 @@
                 <div class="input-group">
                     <label>Sec</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" id="pace-seconds" data-max="59" data-pad="true" value="00">
+                        <input type="text" class="numeric-input integer-only" id="pace-seconds" data-max="59" data-pad="true" value="00">
                         <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
@@ -302,151 +103,6 @@
 
     </form>
 
-    <script>
-        // DOM Selectors
-        const allInputs = document.querySelectorAll('.numeric-input');
-        const tHours = document.getElementById('time-hours'), tMinutes = document.getElementById('time-minutes'), tSeconds = document.getElementById('time-seconds');
-        const distVal = document.getElementById('distance-val'), distUnit = document.getElementById('distanceUnit');
-        const pMinutes = document.getElementById('pace-minutes'), pSeconds = document.getElementById('pace-seconds'), pUnit = document.getElementById('paceUnit');
-        const radios = document.querySelectorAll('input[name="calculationTarget"]');
-
-        const KM_TO_MILES = 0.621371;
-
-        function formatValue(val, shouldPad) {
-            if (!shouldPad) return val.toString();
-            return val.toString().padStart(2, '0');
-        }
-
-        // --- MATH RE-CALCULATION ENGINE ---
-        function updateCalculations() {
-            const activeTarget = document.querySelector('input[name="calculationTarget"]:checked').value;
-
-            // Extract baseline working values from inputs
-            const th = parseInt(tHours.value, 10) || 0, tm = parseInt(tMinutes.value, 10) || 0, ts = parseInt(tSeconds.value, 10) || 0;
-            const totalSeconds = (th * 3600) + (tm * 60) + ts;
-
-            let distance = parseFloat(distVal.value) || 0;
-
-            const pm = parseInt(pMinutes.value, 10) || 0, ps = parseInt(pSeconds.value, 10) || 0;
-            const paceSecondsPerUnit = (pm * 60) + ps;
-
-            // Normalize distance reference dynamically based on drop-down alignment mismatch rules
-            let normalizedDistanceFactor = distance;
-            if (distance > 0) {
-                if (distUnit.value === 'km' && pUnit.value === '/mile') normalizedDistanceFactor = distance * KM_TO_MILES;
-                if (distUnit.value === 'miles' && pUnit.value === '/km') normalizedDistanceFactor = distance / KM_TO_MILES;
-            }
-
-            // 1. CALC TARGET: PACE
-            if (activeTarget === 'pace') {
-                if (totalSeconds <= 0 || distance <= 0) {
-                    pMinutes.value = "00"; pSeconds.value = "00"; return;
-                }
-                const secPerUnit = totalSeconds / normalizedDistanceFactor;
-                pMinutes.value = formatValue(Math.floor(secPerUnit / 60), true);
-                pSeconds.value = formatValue(Math.round(secPerUnit % 60), true);
-            }
-
-            // 2. CALC TARGET: DISTANCE
-            else if (activeTarget === 'distance') {
-                if (totalSeconds <= 0 || paceSecondsPerUnit <= 0) {
-                    distVal.value = "0"; return;
-                }
-                let rawDistance = totalSeconds / paceSecondsPerUnit;
-                // Reverse factor standard formatting step back out to match view selection
-                if (distUnit.value === 'km' && pUnit.value === '/mile') rawDistance = rawDistance / KM_TO_MILES;
-                if (distUnit.value === 'miles' && pUnit.value === '/km') rawDistance = rawDistance * KM_TO_MILES;
-
-                distVal.value = Math.round(rawDistance * 100) / 100; // Round smoothly to 2 decimals
-            }
-
-            // 3. CALC TARGET: TOTAL TIME
-            else if (activeTarget === 'time') {
-                if (distance <= 0 || paceSecondsPerUnit <= 0) {
-                    tHours.value = "00"; tMinutes.value = "00"; tSeconds.value = "00"; return;
-                }
-                const targetTotalSeconds = paceSecondsPerUnit * normalizedDistanceFactor;
-                const hours = Math.floor(targetTotalSeconds / 3600);
-                const minutes = Math.floor((targetTotalSeconds % 3600) / 60);
-                const seconds = Math.round(targetTotalSeconds % 60);
-
-                tHours.value = formatValue(hours, true);
-                tMinutes.value = formatValue(minutes, true);
-                tSeconds.value = formatValue(seconds, true);
-            }
-        }
-
-        // --- MANAGE READONLY STATE LOCKS ---
-        function handleTargetChange() {
-            const target = document.querySelector('input[name="calculationTarget"]:checked').value;
-
-            // Reset input groups to clean attributes dynamically
-            document.querySelectorAll('.picker-section').forEach(sec => sec.style.opacity = "1");
-            allInputs.forEach(i => i.removeAttribute('readonly'));
-
-            // Apply read-only locks based on row identity definitions
-            if (target === 'pace') {
-                pMinutes.setAttribute('readonly', true); pSeconds.setAttribute('readonly', true);
-            } else if (target === 'distance') {
-                distVal.setAttribute('readonly', true);
-            } else if (target === 'time') {
-                tHours.setAttribute('readonly', true); tMinutes.setAttribute('readonly', true); tSeconds.setAttribute('readonly', true);
-            }
-            updateCalculations();
-        }
-
-        // --- CORE UI DELEGATION ---
-        allInputs.forEach(input => {
-            const max = parseInt(input.getAttribute('data-max'), 10);
-            const shouldPad = input.getAttribute('data-pad') === 'true';
-            const wrapper = input.parentElement;
-            const upBtn = wrapper.querySelector('.up');
-            const downBtn = wrapper.querySelector('.down');
-
-            input.addEventListener('input', (e) => {
-                if (input.hasAttribute('readonly')) return;
-                let cleanVal = e.target.value.replace(/[^0-9]/g, '');
-                if (cleanVal !== '') {
-                    let num = parseInt(cleanVal, 10);
-                    if (num > max) num = max;
-                    e.target.value = num.toString();
-                } else {
-                    e.target.value = '';
-                }
-                updateCalculations();
-            });
-
-            input.addEventListener('blur', (e) => {
-                if (input.hasAttribute('readonly')) return;
-                let num = parseInt(e.target.value, 10);
-                if (isNaN(num)) num = 0;
-                e.target.value = formatValue(num, shouldPad);
-                updateCalculations();
-            });
-
-            upBtn.addEventListener('click', () => {
-                if (input.hasAttribute('readonly')) return;
-                let current = parseInt(input.value, 10) || 0;
-                input.value = (current < max) ? formatValue(current + 1, shouldPad) : formatValue(0, shouldPad);
-                updateCalculations();
-            });
-
-            downBtn.addEventListener('click', () => {
-                if (input.hasAttribute('readonly')) return;
-                let current = parseInt(input.value, 10) || 0;
-                input.value = (current > 0) ? formatValue(current - 1, shouldPad) : formatValue(max, shouldPad);
-                updateCalculations();
-            });
-        });
-
-        // Global Selection Observers
-        radios.forEach(radio => radio.addEventListener('change', handleTargetChange));
-        distUnit.addEventListener('change', updateCalculations);
-        pUnit.addEventListener('change', updateCalculations);
-
-        // Run setup routine on load
-        handleTargetChange();
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
