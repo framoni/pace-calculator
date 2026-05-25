@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Activity Calculator Dashboard</title>
+    <title>Bidirectional Activity Calculator</title>
     <style>
-        /* Center everything perfectly on the page */
         html, body {
             height: 100%;
             margin: 0;
@@ -16,7 +15,6 @@
             align-items: center;
         }
 
-        /* The Single Unified Box */
         .calculator-card {
             background: white;
             padding: 30px;
@@ -24,24 +22,59 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
             width: 100%;
-            max-width: 450px; /* Clean, compact panel size */
+            max-width: 450px;
             box-sizing: border-box;
         }
 
         .card-title {
-            margin: 0 0 5px 0;
+            margin: 0;
             text-align: center;
             color: #111827;
             font-size: 20px;
             font-weight: 700;
         }
 
+        /* Target Selector Box Styling */
+        .target-box {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .target-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e40af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #1e3a8a;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
         .picker-section {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            transition: opacity 0.2s ease;
         }
 
         .section-label {
@@ -94,11 +127,26 @@
             padding-right: 22px;
             box-sizing: border-box;
             background: white;
+            color: #111827;
         }
 
         .numeric-input:focus {
             outline: none;
             border-color: #3b82f6;
+        }
+
+        /* Calculated Output Styling */
+        .numeric-input:read-only {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            cursor: not-allowed;
+            border-color: #d1d5db;
+            padding-right: 0; /* Remove padding space since arrows hide */
+        }
+
+        /* Dynamic Selector Rules: Hide arrows when input is read-only */
+        .numeric-input:read-only + .arrow-buttons {
+            display: none !important;
         }
 
         .numeric-input::-webkit-outer-spin-button,
@@ -163,58 +211,61 @@
 </head>
 <body>
 
-    <form class="calculator-card" id="activityForm">
-        <h2 class="card-title">Activity Tracker</h2>
+    <form class="calculator-card" id="activityForm" onsubmit="event.preventDefault();">
+        <h2 class="card-title">Activity Calculator</h2>
 
-        <div class="picker-section">
+        <div class="target-box">
+            <span class="target-title">Target Objective</span>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="calculationTarget" value="pace" checked> Pace
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="calculationTarget" value="distance"> Distance
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="calculationTarget" value="time"> Total Time
+                </label>
+            </div>
+        </div>
+
+        <div class="picker-section" id="section-time">
             <span class="section-label">Total Time</span>
             <div class="picker-container">
                 <div class="input-group">
                     <label>Hours</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" data-max="99" data-pad="true" value="00">
-                        <div class="arrow-buttons">
-                            <button type="button" class="arrow-btn up">▲</button>
-                            <button type="button" class="arrow-btn down">▼</button>
-                        </div>
+                        <input type="text" class="numeric-input" id="time-hours" data-max="99" data-pad="true" value="00">
+                        <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
                 <div class="separator">:</div>
                 <div class="input-group">
                     <label>Min</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" data-max="59" data-pad="true" value="00">
-                        <div class="arrow-buttons">
-                            <button type="button" class="arrow-btn up">▲</button>
-                            <button type="button" class="arrow-btn down">▼</button>
-                        </div>
+                        <input type="text" class="numeric-input" id="time-minutes" data-max="59" data-pad="true" value="00">
+                        <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
                 <div class="separator">:</div>
                 <div class="input-group">
                     <label>Sec</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" data-max="59" data-pad="true" value="00">
-                        <div class="arrow-buttons">
-                            <button type="button" class="arrow-btn up">▲</button>
-                            <button type="button" class="arrow-btn down">▼</button>
-                        </div>
+                        <input type="text" class="numeric-input" id="time-seconds" data-max="59" data-pad="true" value="00">
+                        <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="picker-section">
+        <div class="picker-section" id="section-distance">
             <span class="section-label">Distance</span>
             <div class="picker-container">
-                <div class="input-group" style="flex: 1;">
+                <div class="input-group">
                     <label>Value</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" data-max="999" data-pad="false" value="0">
-                        <div class="arrow-buttons">
-                            <button type="button" class="arrow-btn up">▲</button>
-                            <button type="button" class="arrow-btn down">▼</button>
-                        </div>
+                        <input type="text" class="numeric-input" id="distance-val" data-max="999" data-pad="false" value="0">
+                        <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
                 <select id="distanceUnit">
@@ -224,31 +275,24 @@
             </div>
         </div>
 
-        <div class="picker-section">
+        <div class="picker-section" id="section-pace">
             <span class="section-label">Pace</span>
             <div class="picker-container">
                 <div class="input-group">
                     <label>Min</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" data-max="59" data-pad="true" value="00">
-                        <div class="arrow-buttons">
-                            <button type="button" class="arrow-btn up">▲</button>
-                            <button type="button" class="arrow-btn down">▼</button>
-                        </div>
+                        <input type="text" class="numeric-input" id="pace-minutes" data-max="59" data-pad="true" value="00">
+                        <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
                 <div class="separator">:</div>
                 <div class="input-group">
                     <label>Sec</label>
                     <div class="input-wrapper">
-                        <input type="text" class="numeric-input" data-max="59" data-pad="true" value="00">
-                        <div class="arrow-buttons">
-                            <button type="button" class="arrow-btn up">▲</button>
-                            <button type="button" class="arrow-btn down">▼</button>
-                        </div>
+                        <input type="text" class="numeric-input" id="pace-seconds" data-max="59" data-pad="true" value="00">
+                        <div class="arrow-buttons"><button type="button" class="arrow-btn up">▲</button><button type="button" class="arrow-btn down">▼</button></div>
                     </div>
                 </div>
-
                 <select id="paceUnit">
                     <option value="/km">per km</option>
                     <option value="/mile">per mile</option>
@@ -259,23 +303,108 @@
     </form>
 
     <script>
-        const numericInputs = document.querySelectorAll('.numeric-input');
+        // DOM Selectors
+        const allInputs = document.querySelectorAll('.numeric-input');
+        const tHours = document.getElementById('time-hours'), tMinutes = document.getElementById('time-minutes'), tSeconds = document.getElementById('time-seconds');
+        const distVal = document.getElementById('distance-val'), distUnit = document.getElementById('distanceUnit');
+        const pMinutes = document.getElementById('pace-minutes'), pSeconds = document.getElementById('pace-seconds'), pUnit = document.getElementById('paceUnit');
+        const radios = document.querySelectorAll('input[name="calculationTarget"]');
+
+        const KM_TO_MILES = 0.621371;
 
         function formatValue(val, shouldPad) {
             if (!shouldPad) return val.toString();
             return val.toString().padStart(2, '0');
         }
 
-        numericInputs.forEach(input => {
+        // --- MATH RE-CALCULATION ENGINE ---
+        function updateCalculations() {
+            const activeTarget = document.querySelector('input[name="calculationTarget"]:checked').value;
+
+            // Extract baseline working values from inputs
+            const th = parseInt(tHours.value, 10) || 0, tm = parseInt(tMinutes.value, 10) || 0, ts = parseInt(tSeconds.value, 10) || 0;
+            const totalSeconds = (th * 3600) + (tm * 60) + ts;
+
+            let distance = parseFloat(distVal.value) || 0;
+
+            const pm = parseInt(pMinutes.value, 10) || 0, ps = parseInt(pSeconds.value, 10) || 0;
+            const paceSecondsPerUnit = (pm * 60) + ps;
+
+            // Normalize distance reference dynamically based on drop-down alignment mismatch rules
+            let normalizedDistanceFactor = distance;
+            if (distance > 0) {
+                if (distUnit.value === 'km' && pUnit.value === '/mile') normalizedDistanceFactor = distance * KM_TO_MILES;
+                if (distUnit.value === 'miles' && pUnit.value === '/km') normalizedDistanceFactor = distance / KM_TO_MILES;
+            }
+
+            // 1. CALC TARGET: PACE
+            if (activeTarget === 'pace') {
+                if (totalSeconds <= 0 || distance <= 0) {
+                    pMinutes.value = "00"; pSeconds.value = "00"; return;
+                }
+                const secPerUnit = totalSeconds / normalizedDistanceFactor;
+                pMinutes.value = formatValue(Math.floor(secPerUnit / 60), true);
+                pSeconds.value = formatValue(Math.round(secPerUnit % 60), true);
+            }
+
+            // 2. CALC TARGET: DISTANCE
+            else if (activeTarget === 'distance') {
+                if (totalSeconds <= 0 || paceSecondsPerUnit <= 0) {
+                    distVal.value = "0"; return;
+                }
+                let rawDistance = totalSeconds / paceSecondsPerUnit;
+                // Reverse factor standard formatting step back out to match view selection
+                if (distUnit.value === 'km' && pUnit.value === '/mile') rawDistance = rawDistance / KM_TO_MILES;
+                if (distUnit.value === 'miles' && pUnit.value === '/km') rawDistance = rawDistance * KM_TO_MILES;
+
+                distVal.value = Math.round(rawDistance * 100) / 100; // Round smoothly to 2 decimals
+            }
+
+            // 3. CALC TARGET: TOTAL TIME
+            else if (activeTarget === 'time') {
+                if (distance <= 0 || paceSecondsPerUnit <= 0) {
+                    tHours.value = "00"; tMinutes.value = "00"; tSeconds.value = "00"; return;
+                }
+                const targetTotalSeconds = paceSecondsPerUnit * normalizedDistanceFactor;
+                const hours = Math.floor(targetTotalSeconds / 3600);
+                const minutes = Math.floor((targetTotalSeconds % 3600) / 60);
+                const seconds = Math.round(targetTotalSeconds % 60);
+
+                tHours.value = formatValue(hours, true);
+                tMinutes.value = formatValue(minutes, true);
+                tSeconds.value = formatValue(seconds, true);
+            }
+        }
+
+        // --- MANAGE READONLY STATE LOCKS ---
+        function handleTargetChange() {
+            const target = document.querySelector('input[name="calculationTarget"]:checked').value;
+
+            // Reset input groups to clean attributes dynamically
+            document.querySelectorAll('.picker-section').forEach(sec => sec.style.opacity = "1");
+            allInputs.forEach(i => i.removeAttribute('readonly'));
+
+            // Apply read-only locks based on row identity definitions
+            if (target === 'pace') {
+                pMinutes.setAttribute('readonly', true); pSeconds.setAttribute('readonly', true);
+            } else if (target === 'distance') {
+                distVal.setAttribute('readonly', true);
+            } else if (target === 'time') {
+                tHours.setAttribute('readonly', true); tMinutes.setAttribute('readonly', true); tSeconds.setAttribute('readonly', true);
+            }
+            updateCalculations();
+        }
+
+        // --- CORE UI DELEGATION ---
+        allInputs.forEach(input => {
             const max = parseInt(input.getAttribute('data-max'), 10);
             const shouldPad = input.getAttribute('data-pad') === 'true';
-
             const wrapper = input.parentElement;
             const upBtn = wrapper.querySelector('.up');
             const downBtn = wrapper.querySelector('.down');
 
-            // Direct Typing Validation
             input.addEventListener('input', (e) => {
+                if (input.hasAttribute('readonly')) return;
                 let cleanVal = e.target.value.replace(/[^0-9]/g, '');
                 if (cleanVal !== '') {
                     let num = parseInt(cleanVal, 10);
@@ -284,35 +413,39 @@
                 } else {
                     e.target.value = '';
                 }
+                updateCalculations();
             });
 
-            // Focus Out Formatting
             input.addEventListener('blur', (e) => {
+                if (input.hasAttribute('readonly')) return;
                 let num = parseInt(e.target.value, 10);
                 if (isNaN(num)) num = 0;
                 e.target.value = formatValue(num, shouldPad);
+                updateCalculations();
             });
 
-            // Up Arrow Logic
             upBtn.addEventListener('click', () => {
+                if (input.hasAttribute('readonly')) return;
                 let current = parseInt(input.value, 10) || 0;
-                if (current < max) {
-                    input.value = formatValue(current + 1, shouldPad);
-                } else {
-                    input.value = formatValue(0, shouldPad);
-                }
+                input.value = (current < max) ? formatValue(current + 1, shouldPad) : formatValue(0, shouldPad);
+                updateCalculations();
             });
 
-            // Down Arrow Logic
             downBtn.addEventListener('click', () => {
+                if (input.hasAttribute('readonly')) return;
                 let current = parseInt(input.value, 10) || 0;
-                if (current > 0) {
-                    input.value = formatValue(current - 1, shouldPad);
-                } else {
-                    input.value = formatValue(max, shouldPad);
-                }
+                input.value = (current > 0) ? formatValue(current - 1, shouldPad) : formatValue(max, shouldPad);
+                updateCalculations();
             });
         });
+
+        // Global Selection Observers
+        radios.forEach(radio => radio.addEventListener('change', handleTargetChange));
+        distUnit.addEventListener('change', updateCalculations);
+        pUnit.addEventListener('change', updateCalculations);
+
+        // Run setup routine on load
+        handleTargetChange();
     </script>
 
 </body>
