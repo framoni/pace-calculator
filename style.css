@@ -225,3 +225,24 @@ select:focus {
     outline: none;
     border-color: #3b82f6;
 }
+
+/* Footer Alignment and Typography */
+.card-footer {
+    text-align: right;
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.card-footer a {
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.card-footer a:hover {
+    color: #3b82f6; /* Changes to clear blue on hover */
+    text-decoration: underline;
+}
